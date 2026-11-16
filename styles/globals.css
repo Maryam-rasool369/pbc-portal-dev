@@ -1,0 +1,281 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+#__next {
+  height: 100%;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+.ck-editor__editable ol,
+.ck-editor__editable ul {
+  padding-left: 2rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  list-style-position: outside;
+}
+
+.ck-editor__editable ul {
+  list-style-type: disc !important;
+}
+
+.ck-editor__editable ol {
+  list-style-type: decimal !important;
+}
+
+.ck-editor__editable li {
+  margin-left: 1rem;
+  line-height: 1.5;
+  display: list-item !important;
+}
+
+.ck-editor__editable p {
+  margin: 0.5rem 0;
+}
+
+/* CKEditor Light Mode - Ensure dropdowns are readable */
+.ck-editor-container:not(.ck-dark-mode) .ck.ck-dropdown__panel {
+  background: #ffffff !important;
+  border-color: #e5e7eb !important;
+  color: #111827 !important;
+}
+
+.ck-editor-container:not(.ck-dark-mode) .ck.ck-dropdown__panel .ck-list__item .ck-button {
+  color: #111827 !important;
+}
+
+.ck-editor-container:not(.ck-dark-mode) .ck.ck-dropdown__panel .ck-list__item .ck-button:hover:not(.ck-disabled) {
+  background: #f3f4f6 !important;
+  color: #111827 !important;
+}
+
+.ck-editor-container:not(.ck-dark-mode) .ck.ck-heading-dropdown .ck-button__label,
+.ck-editor-container:not(.ck-dark-mode) .ck.ck-heading-dropdown .ck-button__text {
+  color: #111827 !important;
+}
+
+.ck-editor__editable h1,
+.ck-editor__editable h2,
+.ck-editor__editable h3 {
+  margin: 1rem 0 0.5rem;
+}
+
+.ck-editor__editable blockquote {
+  border-left: 4px solid #ccc;
+  margin: 1rem 0;
+  padding-left: 1rem;
+  color: #555;
+}
+
+.ck-dark-mode .ck.ck-editor__main > .ck-editor__editable {
+  background: #1f2937 !important;
+  color: #f3f4f6 !important;
+  min-height: 200px;
+}
+
+.ck-dark-mode .ck.ck-editor__main > .ck-editor__editable:focus {
+  border-color: #60a5fa !important;
+}
+
+/* CKEditor Toolbar Dark Mode */
+.ck-dark-mode .ck.ck-toolbar {
+  background: #1f2937 !important;
+  border-color: #374151 !important;
+}
+
+.ck-dark-mode .ck.ck-toolbar .ck-button {
+  color: #f3f4f6 !important;
+}
+
+.ck-dark-mode .ck.ck-toolbar .ck-button:hover:not(.ck-disabled) {
+  background: #374151 !important;
+}
+
+.ck-dark-mode .ck.ck-toolbar .ck-button.ck-on {
+  background: #374151 !important;
+  color: #f3f4f6 !important;
+}
+
+/* CKEditor Dropdown Panel Dark Mode */
+.ck-dark-mode .ck.ck-dropdown__panel {
+  background: #1f2937 !important;
+  border-color: #374151 !important;
+  color: #f3f4f6 !important;
+}
+
+.ck-dark-mode .ck.ck-dropdown__panel .ck-list {
+  background: #1f2937 !important;
+}
+
+.ck-dark-mode .ck.ck-dropdown__panel .ck-list__item {
+  background: #1f2937 !important;
+}
+
+.ck-dark-mode .ck.ck-dropdown__panel .ck-list__item .ck-button {
+  color: #f3f4f6 !important;
+  background: transparent !important;
+}
+
+.ck-dark-mode .ck.ck-dropdown__panel .ck-list__item .ck-button:hover:not(.ck-disabled) {
+  background: #374151 !important;
+  color: #f3f4f6 !important;
+}
+
+.ck-dark-mode .ck.ck-dropdown__panel .ck-list__item .ck-button.ck-on {
+  background: #4b5563 !important;
+  color: #f3f4f6 !important;
+}
+
+/* Heading Dropdown Specific Styles */
+.ck-dark-mode .ck.ck-heading-dropdown .ck-button__label {
+  color: #f3f4f6 !important;
+}
+
+.ck-dark-mode .ck.ck-heading-dropdown .ck-button__text {
+  color: #f3f4f6 !important;
+}
+
+.ck-dark-mode .ck.ck-heading-dropdown .ck-button__arrow {
+  color: #f3f4f6 !important;
+}
+
+/* All dropdown buttons in toolbar */
+.ck-dark-mode .ck.ck-toolbar .ck-dropdown .ck-button {
+  color: #f3f4f6 !important;
+}
+
+.ck-dark-mode .ck.ck-toolbar .ck-dropdown .ck-button:hover:not(.ck-disabled) {
+  background: #374151 !important;
+  color: #f3f4f6 !important;
+}
+
+/* CKEditor CSS Variables for Dark Mode */
+.ck-dark-mode {
+  --ck-color-base-background: #1f2937;
+  --ck-color-text: #f3f4f6;
+  --ck-color-base-border: #374151;
+  --ck-color-base-foreground: #111827;
+  --ck-color-focus-border: #60a5fa;
+  --ck-color-button-default-hover-background: #374151;
+  --ck-color-button-on-background: #374151;
+  --ck-color-button-on-hover-background: #4b5563;
+  --ck-color-toolbar-background: #1f2937;
+  --ck-color-button-default-background: transparent;
+  --ck-color-button-default-text: #f3f4f6;
+  --ck-color-button-on-text: #f3f4f6;
+  --ck-color-dropdown-panel-background: #1f2937;
+  --ck-color-dropdown-panel-border: #374151;
+  --ck-color-list-background: #1f2937;
+  --ck-color-list-button-hover-background: #374151;
+  --ck-color-list-button-on-background: #4b5563;
+  --ck-color-list-button-on-text: #f3f4f6;
+  --ck-color-list-button-text: #f3f4f6;
+}
+
+.leaflet-container {
+  z-index: 0 !important;
+}
+
+.quill-dark .ql-toolbar {
+  background-color: #1f2937; /* gray-800 */
+  border-color: #d1b100; /* gold */
+  color: #f3f4f6; /* gray-100 */
+}
+
+.quill-dark .ql-container {
+  background-color: #111827; /* gray-900 */
+  color: #f3f4f6;
+  min-height: 250px;
+}
+
+.quill-dark .ql-editor {
+  color: #f3f4f6;
+  min-height: 200px;
+}
+
+.quill-dark .ql-toolbar .ql-picker,
+.quill-dark .ql-toolbar .ql-stroke {
+  color: #f3f4f6 !important;
+  stroke: #f3f4f6 !important;
+  fill: #f3f4f6 !important;
+}
+
+.quill-dark .ql-container {
+  border: none !important;
+}
+
+.quill-dark .ql-toolbar {
+  border: none !important;
+  border-bottom: 1px solid #d1b100; /* Optional: add a bottom line only */
+}
+
+/* Styles for rendered news/content HTML - ensure lists are visible */
+.prose ul,
+.prose ol,
+[class*="prose"] ul,
+[class*="prose"] ol {
+  list-style-type: disc !important;
+  padding-left: 2rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.prose ol,
+[class*="prose"] ol {
+  list-style-type: decimal !important;
+}
+
+.prose li,
+[class*="prose"] li {
+  display: list-item !important;
+  margin-left: 1rem;
+  line-height: 1.5;
+}
+
+/* General content areas with HTML */
+div[class*="text-gray"] ul,
+div[class*="text-gray"] ol {
+  list-style-type: disc !important;
+  padding-left: 2rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+div[class*="text-gray"] ol {
+  list-style-type: decimal !important;
+}
+
+div[class*="text-gray"] li {
+  display: list-item !important;
+  margin-left: 1rem;
+  line-height: 1.5;
+}
+
+/* Ensure lists are visible in dark mode */
+.dark .prose ul,
+.dark .prose ol,
+.dark [class*="prose"] ul,
+.dark [class*="prose"] ol {
+  list-style-type: disc !important;
+}
+
+.dark .prose ol,
+.dark [class*="prose"] ol {
+  list-style-type: decimal !important;
+}
+
+.dark div[class*="text-gray"] ul,
+.dark div[class*="text-gray"] ol {
+  list-style-type: disc !important;
+}
+
+.dark div[class*="text-gray"] ol {
+  list-style-type: decimal !important;
+}

@@ -1,0 +1,11 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "CU7695SQT5.ae.pbcdubai.admin",
+        "paths": ["/open-app", "/open-app/*"]
+      }
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+
+> admin-next-tailwind@0.1.0 build
+> next build
+
+info  - Loaded env from /Users/dev/Desktop/PBC/pbc-portal/.env
+info  - Skipping validation of types
+info  - Skipping linting
+info  - Creating an optimized production build...
+Browserslist: caniuse-lite is outdated. Please run:
+  npx browserslist@latest --update-db
+  Why you should do it regularly: https://github.com/browserslist/browserslist#browsers-data-updating
+Warning: For production Image Optimization with Next.js, the optional 'sharp' package is strongly recommended. Run 'yarn add sharp', and Next.js will use it automatically for Image Optimization.
+Read more: https://nextjs.org/docs/messages/sharp-missing-in-production
+Failed to compile.
+
+./pages/committee/index.tsx
+Error: 
+  [31mx[0m Expected ',', got 'open'
+     ,-[[36;1;4m/Users/dev/Desktop/PBC/pbc-portal/pages/committee/index.tsx[0m:199:1]
+ [2m199[0m |       </div>
+ [2m200[0m | 
+ [2m201[0m |       <CreateCommitteeModal
+ [2m202[0m |         open={openCreate}
+     : [31;1m        ^^^^[0m
+ [2m203[0m |         onClose={() => setOpenCreate(false)}
+ [2m204[0m |         onSubmit={handleCreateCommittee}
+ [2m205[0m |       />
+     `----
+
+Caused by:
+    Syntax Error
+
+
+> Build failed because of webpack errors

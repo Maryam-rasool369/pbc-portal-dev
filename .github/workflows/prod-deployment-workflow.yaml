@@ -1,0 +1,102 @@
+name: Deploy PBC Portals to Production
+
+on:
+  pull_request:
+    branches:
+      - production
+    types: [closed]
+
+jobs:
+  deploy_prod:
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_REGION: me-central-1
+      EC2_HOST: ${{ secrets.PROD_EC2_HOST }}
+      EC2_USER: ubuntu
+      SSH_PRIVATE_KEY: ${{ secrets.PROD_SSH_PRIVATE_KEY }}
+      SECURITY_GROUP_ID: ${{ secrets.PROD_SECURITY_GROUP_ID }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Get Public IP
+        id: get_ip
+        run: |
+          IP=$(curl -s -4 ifconfig.me)
+          echo "ip=$IP" >> $GITHUB_OUTPUT
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+
+      - name: Add IP to Security Group
+        run: |
+          RUNNER_IP="${{ steps.get_ip.outputs.ip }}/32"
+          aws ec2 authorize-security-group-ingress \
+            --group-id ${{ env.SECURITY_GROUP_ID }} \
+            --protocol tcp \
+            --port 22 \
+            --cidr $RUNNER_IP
+
+      - name: Wait for Security Group Rule to Propagate
+        run: sleep 5
+
+      - name: Setup SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ env.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ env.EC2_HOST }} >> ~/.ssh/known_hosts
+
+      - name: SSH into EC2 and Deploy Portals
+        run: |
+          ssh -i ~/.ssh/id_rsa ${{ env.EC2_USER }}@${{ env.EC2_HOST }} << 'EOF'
+            set -e
+            echo "Connected to EC2. Deploying portals..."
+            # Install PM2 if not installed
+            if ! command -v pm2 &> /dev/null; then
+              sudo npm install -g pm2
+            fi
+
+            # Go to portal directory
+            cd /home/ubuntu/pbc-portal
+
+            # Pull latest code
+            git fetch origin
+            git reset --hard origin/main
+
+            # Install dependencies
+            npm i --legacy-peer-deps
+
+            # Build Next.js app
+            npm run build
+
+            # Start admin portal on port 3000
+            PORT=3000 pm2 reload pbc-portal --update-env
+            # Start member portal on port 4000
+            PORT=4000 pm2 reload member-portal --update-env
+
+            # Save PM2 process list
+            pm2 save
+
+            # Test Nginx configuration and reload
+
+            sudo nginx -t
+            sudo systemctl reload nginx
+            echo "Deployment completed successfully!"
+          EOF
+
+      - name: Remove IP from Security Group
+        if: always()
+        run: |
+          RUNNER_IP="${{ steps.get_ip.outputs.ip }}/32"
+          aws ec2 revoke-security-group-ingress \
+            --group-id ${{ env.SECURITY_GROUP_ID }} \
+            --protocol tcp \
+            --port 22 \
+            --cidr $RUNNER_IP

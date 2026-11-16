@@ -1,0 +1,59 @@
+name: Deploy latest pbc portal 
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - dev
+
+jobs:
+  deploy_staging_environment:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_REGION: ap-south-1
+      PAT: ${{ secrets.PAT }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID}}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      EC2_IP: ${{ secrets.EC2_IP }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Configure AWS Credentials
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}  
+          aws configure set region ${{ env.AWS_REGION }} 
+
+      - name: Prepare SSH Key
+        run: |
+          [ -d ~/.ssh ] || mkdir ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > private_key.pem
+          chmod 600 private_key.pem
+          ssh-keyscan -H "$EC2_IP" >> ~/.ssh/known_hosts
+
+      - name: Deploy to ECS instance
+        run: |
+          ssh -i private_key.pem ubuntu@$EC2_IP << 'EOF'
+          sudo apt-get update -y
+          if ! command -v pm2 &> /dev/null; then
+           sudo npm install -g pm2
+          fi
+          cd /home/ubuntu/pbc-portal || exit
+          pm2 stop all
+          git pull origin dev
+          npm i --legacy-peer-deps
+          npm run build
+          npx next export
+          sudo nginx -t
+          pm2 start ecosystem.config.js
+          pm2 save
+          sudo systemctl reload nginx
+          sudo systemctl restart nginx
+          sudo systemctl status nginx
+          EOF

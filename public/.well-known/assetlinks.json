@@ -1,0 +1,13 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "ae.pbcdubai.admin",
+      "sha256_cert_fingerprints": [
+        "08:62:4C:AD:E3:A1:BB:F2:0B:3D:72:D2:18:46:AF:A8:A4:AC:3B:9E:2E:4E:B8:7D:35:EB:59:33:ED:4B:AF:5D",
+        "FA:C6:17:45:DC:09:03:78:6F:B9:ED:E6:2A:96:2B:39:9F:73:48:F0:BB:6F:89:9B:83:32:66:75:91:03:3B:9C"
+      ]
+    }
+  }
+]
